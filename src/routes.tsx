@@ -1,6 +1,6 @@
 import { ChainId } from '@sushiswap/sdk'
 import React from 'react'
-import { Redirect, Route, RouteComponentProps, useLocation, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 import { useActiveWeb3React } from 'hooks/useActiveWeb3React'
 import Connect from './kashi/pages/Connect'
 import BorrowMarkets from './kashi/pages/Markets/Borrow'
@@ -17,7 +17,6 @@ import {
 import Bento from './pages/BentoBox'
 import BentoBalances from './pages/BentoBox/Balances'
 import Migrate from './pages/Migrate'
-import Pool from './pages/Pool'
 import PoolFinder from './pages/PoolFinder'
 import RemoveLiquidity from './pages/RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './pages/RemoveLiquidity/redirects'
@@ -39,6 +38,10 @@ import MasterChefV1 from './pages/Yield/masterchefv1'
 import MiniChefV2 from './pages/Yield/minichefv2'
 import Positions from './pages/Positions'
 import Transactions from './pages/Transactions'
+import SushiPro from './sushipro/routes'
+import WalletRoute from './components/WalletRoute'
+import PublicRoute from './components/PublicRoute'
+import Pool from './pages/Pool'
 
 function Routes(): JSX.Element {
     const { chainId } = useActiveWeb3React()
@@ -104,6 +107,8 @@ function Routes(): JSX.Element {
             <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
             <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
 
+            <SushiPro />
+
             {/* Redirects for app routes */}
             <Route
                 exact
@@ -136,59 +141,3 @@ function Routes(): JSX.Element {
 }
 
 export default Routes
-
-// A wrapper for <Route> that redirects to the Connect Wallet
-// screen if you're not yet authenticated.
-export const PublicRoute = ({ component: Component, children, ...rest }: any) => {
-    const { account } = useActiveWeb3React()
-    const location = useLocation<any>()
-    return (
-        <>
-            <Route
-                {...rest}
-                render={(props: RouteComponentProps) =>
-                    account ? (
-                        <Redirect
-                            to={{
-                                pathname: location.state ? location.state.from.pathname : '/'
-                            }}
-                        />
-                    ) : Component ? (
-                        <Component {...props} />
-                    ) : (
-                        children
-                    )
-                }
-            />
-        </>
-    )
-}
-
-// A wrapper for <Route> that redirects to the Connect Wallet
-// screen if you're not yet authenticated.
-export const WalletRoute = ({ component: Component, children, ...rest }: any) => {
-    const { account } = useActiveWeb3React()
-    return (
-        <>
-            <Route
-                {...rest}
-                render={({ location, props, match }: any) => {
-                    return account ? (
-                        Component ? (
-                            <Component {...props} {...rest} match={match} />
-                        ) : (
-                            children
-                        )
-                    ) : (
-                        <Redirect
-                            to={{
-                                pathname: '/connect',
-                                state: { from: location }
-                            }}
-                        />
-                    )
-                }}
-            />
-        </>
-    )
-}
