@@ -12,7 +12,6 @@ import {
 import Bento from './pages/BentoBox'
 import BentoBalances from './pages/BentoBox/Balances'
 import Migrate from './pages/Migrate'
-import Pool from './pages/Pool'
 import PoolFinder from './pages/PoolFinder'
 import RemoveLiquidity from './pages/RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './pages/RemoveLiquidity/redirects'
@@ -37,6 +36,7 @@ import Transactions from './pages/Transactions'
 import PublicRoute from 'components/PublicRoute'
 import WalletRoute from 'components/WalletRoute'
 import Kashi from 'kashi/routes'
+import SushiPro from 'sushipro/routes'
 
 function Routes(): JSX.Element {
     const { chainId } = useActiveWeb3React()
@@ -94,6 +94,8 @@ function Routes(): JSX.Element {
             <Route exact strict path="/zap" component={AddSingleSideLiquidity} />
             <Route exact strict path="/zap/:poolAddress" component={AddSingleSideLiquidity} />
             <Route exact strict path="/zap/:poolAddress/:currencyId" component={AddSingleSideLiquidity} />
+
+            <SushiPro />
 
             {/* Redirects for app routes */}
             <Route
