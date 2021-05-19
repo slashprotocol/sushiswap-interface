@@ -1,5 +1,6 @@
 import './styles/index.css'
 import '@fontsource/dm-sans/index.css'
+import '@fontsource/dm-mono/index.css'
 import 'react-tabs/style/react-tabs.css'
 import './bootstrap'
 

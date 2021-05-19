@@ -75,11 +75,16 @@ export const toK = (num: string) => {
 }
 
 // using a currency library here in case we want to add more in future
-const priceFormatter = new Intl.NumberFormat('en-US', {
+export const priceFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-    minimumFractionDigits: 2
+    minimumFractionDigits: 4
 })
+
+export const decimalFormatter = (decimals: number) =>
+    new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: decimals
+    })
 
 export const formattedNum = (number: any, usd = false) => {
     if (isNaN(number) || number === '' || number === undefined) {
@@ -103,14 +108,12 @@ export const formattedNum = (number: any, usd = false) => {
     }
 
     if (num > 1000) {
-        return usd
-            ? '$' + Number(parseFloat(String(num)).toFixed(0)).toLocaleString()
-            : '' + Number(parseFloat(String(num)).toFixed(0)).toLocaleString()
+        return usd ? '$' + decimalFormatter(0).format(num) : '' + decimalFormatter(0).format(num)
     }
 
     if (usd) {
         if (num < 0.1) {
-            return '$' + Number(parseFloat(String(num)).toFixed(4))
+            return '$' + decimalFormatter(4).format(num)
         } else {
             const usdString = priceFormatter.format(num)
             return '$' + usdString.slice(1, usdString.length)

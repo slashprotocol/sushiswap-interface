@@ -6,6 +6,7 @@ import { useDerivedSwapInfo } from '../../state/swap/hooks'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import ComponentHeader from './ComponentHeader'
 import { PairState, usePair } from '../../data/Reserves'
+import Loader from '../../components/Loader'
 
 const PairStats: FC = () => {
     const { currencies } = useDerivedSwapInfo()
@@ -16,6 +17,7 @@ const PairStats: FC = () => {
     const lastPrice = usePrevious(price)
     const priceUp = lastPrice && price > lastPrice
 
+    if (pairState === PairState.LOADING) return <Loader />
     if (pairState !== PairState.EXISTS) return <div>Pair does not exist</div>
 
     return (
