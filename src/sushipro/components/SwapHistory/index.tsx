@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, FC } from 'react'
+import React, { useCallback, useEffect, useRef, FC, useState } from 'react'
 import useWebSocket from 'react-use-websocket'
 import { t } from '@lingui/macro'
 import ListHeader from '../ListHeader'
@@ -23,7 +23,6 @@ interface SwapMessage {
     price: number
     txHash: string
     priceBase: number
-    maker: string
 }
 
 const SwapHistory: FC = () => {
@@ -32,6 +31,7 @@ const SwapHistory: FC = () => {
     const { i18n } = useLingui()
     const { sendMessage, lastMessage } = useWebSocket('wss://ws-eu.pusher.com/app/068f5f33d82a69845215')
     const messageHistory = useRef<SwapMessage[]>([])
+    const [loading, setLoading] = useState(true)
 
     const parseMessage = useCallback(
         async (message: MessageEvent) => {
@@ -45,14 +45,13 @@ const SwapHistory: FC = () => {
                         if (parsedPair.toLowerCase() === pair.liquidityToken.address.toLowerCase())
                             messageHistory.current.push(
                                 ...parsedData.result.data.swaps.map(
-                                    ({ amountBase, side, timestamp, price, txHash, maker }: SwapMessage) => ({
+                                    ({ amountBase, side, timestamp, price, txHash }: SwapMessage) => ({
                                         chainId,
                                         amountBase,
                                         side,
                                         timestamp,
                                         price,
-                                        txHash,
-                                        maker
+                                        txHash
                                     })
                                 )
                             )
@@ -62,6 +61,29 @@ const SwapHistory: FC = () => {
         },
         [pair]
     )
+
+    useEffect(() => {
+        const init = async () => {
+            const resp = await fetch(
+                'https://api.sushipro.io/?api_key=EatSushiIsGood&act=last_transactions&chainID=1&pair=0x795065dcc9f64b5614c407a6efdc400da6221fb0'
+            )
+
+            const { results } = await resp.json()
+            const history: SwapMessage[] = []
+            for (let i = results.length - 1; i >= 0; i--) {
+                if (results[i]) {
+                    const { chainId, amountBase, price, side, timestamp, txHash } = results[i]
+                    console.log(results[i])
+                    history.push({ chainId, amountBase, price, side, timestamp, txHash } as SwapMessage)
+                }
+            }
+
+            messageHistory.current = history
+            setLoading(false)
+        }
+
+        init()
+    }, [])
 
     useEffect(() => {
         sendMessage(JSON.stringify({ event: 'pusher:subscribe', data: { auth: '', channel: 'live_transactions' } }))
@@ -108,23 +130,33 @@ const SwapHistory: FC = () => {
             </div>
             <div className="overflow-y-scroll border-dark-850">
                 <div className="flex flex-col-reverse justify-end pb-2 divide-y">
-                    {messageHistory.current.map(({ chainId, amountBase, side, timestamp, price, txHash, maker }) => {
-                        const buy = side === OrderDirection.BUY
-                        return (
-                            <div key={`${maker}-${txHash}`} className="border-dark-850 relative">
-                                <div className="grid grid-flow-col grid-cols-4 text-sm gap-2 py-1">
-                                    <div className="text-sm text-secondary">{NETWORK_LABEL[chainId]}</div>
-                                    <div className={`text-right text-sm ${buy ? 'text-green' : 'text-red'} font-mono`}>
-                                        {priceFormatter.format(price)}
-                                    </div>
-                                    <div className="text-right text-sm font-mono">{formattedNum(amountBase)}</div>
-                                    <div className="text-right text-sm text-secondary font-mono">
-                                        {new Date(timestamp * 1000).toLocaleTimeString()}
+                    {loading ? (
+                        <div className="flex justify-between items-center">
+                            <Loader />
+                        </div>
+                    ) : (
+                        messageHistory.current.map(({ chainId, amountBase, side, timestamp, price, txHash }, index) => {
+                            const buy = side === OrderDirection.BUY
+                            return (
+                                <div key={`${index}`} className="border-dark-850 relative">
+                                    <div className="grid grid-flow-col grid-cols-4 text-sm gap-2 py-1">
+                                        <div className="text-sm text-secondary">{NETWORK_LABEL[chainId]}</div>
+                                        <div
+                                            className={`text-right text-sm ${
+                                                buy ? 'text-green' : 'text-red'
+                                            } font-mono`}
+                                        >
+                                            {priceFormatter.format(price)}
+                                        </div>
+                                        <div className="text-right text-sm font-mono">{formattedNum(amountBase)}</div>
+                                        <div className="text-right text-sm text-secondary font-mono">
+                                            {new Date(timestamp * 1000).toLocaleTimeString()}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        )
-                    })}
+                            )
+                        })
+                    )}
                 </div>
             </div>
         </div>
