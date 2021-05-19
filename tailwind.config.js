@@ -152,7 +152,8 @@ module.exports = {
                 'bentobox-logo': "url('/src/assets/kashi/bentobox-logo.png')"
             }),
             fontFamily: {
-                sans: ['DM Sans', ...defaultTheme.fontFamily.sans]
+                sans: ['DM Sans', ...defaultTheme.fontFamily.sans],
+                mono: ['DM Mono']
             },
             borderRadius: {
                 ...defaultTheme.borderRadius,

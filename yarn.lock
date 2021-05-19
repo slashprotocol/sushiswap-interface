@@ -2159,6 +2159,11 @@
     "@ethersproject/properties" "^5.1.0"
     "@ethersproject/strings" "^5.1.0"
 
+"@fontsource/dm-mono@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/dm-mono/-/dm-mono-4.3.0.tgz#be213bfcb6e6c47a5cac4a73148cbcf8af0fe473"
+  integrity sha512-EA4iBufnqwfo2Apgfkgk/5goH2wBWHdZUFTzdAW8W1U40UZkOr3G+8ssF7KpAfyYzyv6CTg0RZHZTMiVjYrbCg==
+
 "@fontsource/dm-sans@^4.2.2":
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/@fontsource/dm-sans/-/dm-sans-4.2.2.tgz#72601e1ced27468a5fb84853806f5611722961ca"
