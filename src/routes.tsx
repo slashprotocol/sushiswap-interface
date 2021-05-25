@@ -47,6 +47,9 @@ function Routes(): JSX.Element {
             <Route exact strict path="/bento" component={Bento} />
             <WalletRoute exact strict path="/bento/balances" component={BentoBalances} />
 
+            {/* Sushipro */}
+            <Route strict path="/sushipro" component={SushiPro} />
+
             {/* Kashi */}
             <Route strict path="/bento/kashi" component={Kashi} />
 
@@ -94,8 +97,6 @@ function Routes(): JSX.Element {
             <Route exact strict path="/zap" component={AddSingleSideLiquidity} />
             <Route exact strict path="/zap/:poolAddress" component={AddSingleSideLiquidity} />
             <Route exact strict path="/zap/:poolAddress/:currencyId" component={AddSingleSideLiquidity} />
-
-            <SushiPro />
 
             {/* Redirects for app routes */}
             <Route

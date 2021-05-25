@@ -6,24 +6,9 @@ import { useLingui } from '@lingui/react'
 import { formattedNum, priceFormatter } from '../../../utils'
 import { useDerivedSwapInfo } from '../../../state/swap/hooks'
 import { NETWORK_LABEL } from '../../../constants/networks'
-import { ChainId } from '@sushiswap/sdk'
 import { PairState, usePair } from '../../../data/Reserves'
 import Loader from '../../../components/Loader'
-
-enum OrderDirection {
-    BUY = 'BUY',
-    SELL = 'SELL'
-}
-
-interface SwapMessage {
-    chainId: ChainId
-    amountBase: number
-    side: OrderDirection
-    timestamp: number
-    price: number
-    txHash: string
-    priceBase: number
-}
+import { OrderDirection, SwapMessage } from '../../entities'
 
 const SwapHistory: FC = () => {
     const { currencies } = useDerivedSwapInfo()
@@ -73,7 +58,6 @@ const SwapHistory: FC = () => {
             for (let i = results.length - 1; i >= 0; i--) {
                 if (results[i]) {
                     const { chainId, amountBase, price, side, timestamp, txHash } = results[i]
-                    console.log(results[i])
                     history.push({ chainId, amountBase, price, side, timestamp, txHash } as SwapMessage)
                 }
             }
