@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, FC, useState } from 'react'
+import React, { useCallback, useEffect, useRef, FC, useState, useLayoutEffect } from 'react'
 import useWebSocket from 'react-use-websocket'
 import { t } from '@lingui/macro'
 import ListHeader from '../ListHeader'
@@ -21,6 +21,7 @@ const SwapHistory: FC = () => {
     const parseMessage = useCallback(
         async (message: MessageEvent) => {
             if (!pair?.liquidityToken.address) return
+
             try {
                 const msg = JSON.parse(message.data)
                 if ('data' in msg) {
@@ -44,13 +45,16 @@ const SwapHistory: FC = () => {
                 }
             } catch (e) {}
         },
-        [pair]
+        [pair?.liquidityToken.address]
     )
 
-    useEffect(() => {
-        const init = async () => {
+    useLayoutEffect(() => {
+        if (!pair?.liquidityToken.address) return
+        if (!loading) setLoading(true)
+
+        const populate = async () => {
             const resp = await fetch(
-                'https://api.sushipro.io/?api_key=EatSushiIsGood&act=last_transactions&chainID=1&pair=0x795065dcc9f64b5614c407a6efdc400da6221fb0'
+                `https://api.sushipro.io/?api_key=EatSushiIsGood&act=last_transactions&chainID=1&pair=${pair?.liquidityToken.address.toLowerCase()}`
             )
 
             const { results } = await resp.json()
@@ -66,8 +70,8 @@ const SwapHistory: FC = () => {
             setLoading(false)
         }
 
-        init()
-    }, [])
+        populate()
+    }, [pair?.liquidityToken.address])
 
     useEffect(() => {
         sendMessage(JSON.stringify({ event: 'pusher:subscribe', data: { auth: '', channel: 'live_transactions' } }))
@@ -79,31 +83,32 @@ const SwapHistory: FC = () => {
         parseMessage(lastMessage)
     }, [lastMessage, parseMessage])
 
-    if (pairState === PairState.LOADING)
+    if (pairState === PairState.LOADING || loading)
         return (
-            <div className="flex flex-col justify-between items-center">
-                <Loader />
+            <div className="h-full flex justify-center items-center">
+                <Loader size="24px" />
             </div>
         )
 
     if (pairState === PairState.NOT_EXISTS)
         return (
-            <div className="flex flex-col justify-between items-center">
+            <div className="h-full flex justify-center items-center">
                 <span className="text-secondary text-sm">{i18n._(t`Pair does not exist`)}</span>
             </div>
         )
 
     if (pairState === PairState.INVALID)
         return (
-            <div className="flex flex-col justify-between items-center">
+            <div className="h-full flex justify-center items-center">
                 <span className="text-secondary text-sm">{i18n._(t`Please select a token`)}</span>
             </div>
         )
 
     return (
         <div className="w-full flex flex-col divide-y h-full">
-            <div className="flex justify-between items-center grid grid-flow-col grid-cols-4 text-secondary pb-1.5 gap-2 border-dark-850">
+            <div className="flex justify-between items-center grid grid-flow-col grid-cols-5 text-secondary pb-1.5 gap-2 border-dark-850">
                 <ListHeader>{i18n._(t`Network`)}</ListHeader>
+                <ListHeader>{i18n._(t`Symbol`)}</ListHeader>
                 <ListHeader className="justify-end">
                     {i18n._(t`Price`)} <strong>USD</strong>
                 </ListHeader>
@@ -114,33 +119,24 @@ const SwapHistory: FC = () => {
             </div>
             <div className="overflow-y-scroll border-dark-850">
                 <div className="flex flex-col-reverse justify-end pb-2 divide-y">
-                    {loading ? (
-                        <div className="flex justify-between items-center">
-                            <Loader />
-                        </div>
-                    ) : (
-                        messageHistory.current.map(({ chainId, amountBase, side, timestamp, price, txHash }, index) => {
-                            const buy = side === OrderDirection.BUY
-                            return (
-                                <div key={`${index}`} className="border-dark-850 relative">
-                                    <div className="grid grid-flow-col grid-cols-4 text-sm gap-2 py-1">
-                                        <div className="text-sm text-secondary">{NETWORK_LABEL[chainId]}</div>
-                                        <div
-                                            className={`text-right text-sm ${
-                                                buy ? 'text-green' : 'text-red'
-                                            } font-mono`}
-                                        >
-                                            {priceFormatter.format(price)}
-                                        </div>
-                                        <div className="text-right text-sm font-mono">{formattedNum(amountBase)}</div>
-                                        <div className="text-right text-sm text-secondary font-mono">
-                                            {new Date(timestamp * 1000).toLocaleTimeString()}
-                                        </div>
+                    {messageHistory.current.map(({ chainId, amountBase, side, timestamp, price, txHash }, index) => {
+                        const buy = side === OrderDirection.BUY
+                        return (
+                            <div key={`${index}`} className="border-dark-850 relative">
+                                <div className="grid grid-flow-col grid-cols-5 text-sm gap-2 py-1">
+                                    <div className="text-xs text-secondary">{NETWORK_LABEL[chainId]}</div>
+                                    <div className="text-xs text-secondary">{`${pair?.token0.symbol}/${pair?.token1.symbol}`}</div>
+                                    <div className={`text-right text-xs ${buy ? 'text-green' : 'text-red'} font-mono`}>
+                                        {priceFormatter.format(price)}
+                                    </div>
+                                    <div className="text-right text-xs font-mono">{formattedNum(amountBase)}</div>
+                                    <div className="text-right text-xs text-secondary font-mono">
+                                        {new Date(timestamp * 1000).toLocaleString()}
                                     </div>
                                 </div>
-                            )
-                        })
-                    )}
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
         </div>

@@ -37,6 +37,7 @@ import PublicRoute from 'components/PublicRoute'
 import WalletRoute from 'components/WalletRoute'
 import Kashi from 'kashi/routes'
 import SushiPro from 'sushipro/routes'
+import Pool from './pages/Pool'
 
 function Routes(): JSX.Element {
     const { chainId } = useActiveWeb3React()

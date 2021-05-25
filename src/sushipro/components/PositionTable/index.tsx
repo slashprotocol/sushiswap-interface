@@ -52,21 +52,21 @@ const PositionTable: FC = () => {
 
     if (pairState === PairState.LOADING)
         return (
-            <div className="flex flex-col justify-between items-center">
+            <div className="h-full flex justify-center items-center">
                 <Loader />
             </div>
         )
 
     if (pairState === PairState.NOT_EXISTS)
         return (
-            <div className="flex flex-col justify-between items-center">
+            <div className="h-full flex justify-center items-center">
                 <span className="text-secondary text-sm">{i18n._(t`Pair does not exist`)}</span>
             </div>
         )
 
     if (pairState === PairState.INVALID)
         return (
-            <div className="flex flex-col justify-between items-center">
+            <div className="h-full flex justify-center items-center">
                 <span className="text-secondary text-sm">{i18n._(t`Please select a token`)}</span>
             </div>
         )
