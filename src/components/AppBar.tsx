@@ -73,21 +73,7 @@ function AppBar(): JSX.Element {
                                             )}
                                             
                                             
-                                            {chainId &&
-                                                [
-                                                    ChainId.MAINNET,
-                                                    ChainId.BSC,
-                                                    ChainId.XDAI,
-                                                    ChainId.FANTOM,
-                                                    ChainId.MATIC
-                                                ].includes(chainId) && (
-                                                    <ExternalLink
-                                                        id={`analytics-nav-link`}
-                                                        href={ANALYTICS_URL[chainId] || 'https://slashprotocol.com'}
-                                                    >
-                                                        {i18n._(t`Analytics`)}
-                                                    </ExternalLink>
-                                                )}
+                                        
                                         </div>
                                     </div>
                                 </div>
@@ -324,21 +310,6 @@ function AppBar(): JSX.Element {
                                 )}
                               
                              
-                                {chainId &&
-                                    [
-                                        ChainId.MAINNET,
-                                        ChainId.BSC,
-                                        ChainId.XDAI,
-                                        ChainId.FANTOM,
-                                        ChainId.MATIC
-                                    ].includes(chainId) && (
-                                        <ExternalLink
-                                            id={`analytics-nav-link`}
-                                            href={ANALYTICS_URL[chainId] || 'https://slashprotocol.com'}
-                                        >
-                                            {i18n._(t`Analytics`)}
-                                        </ExternalLink>
-                                    )}
                             </div>
                         </Disclosure.Panel>
                     </>
