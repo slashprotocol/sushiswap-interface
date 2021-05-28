@@ -629,7 +629,7 @@ export default function Swap() {
                     {/*    </div>*/}
                     {/*)}*/}
                     <a
-                        href="https://miso.sushi.com/auctions/0x5cFEb913fe8aE7e5E63E5930F044f36Ba4B882aB"
+                        href="https://slashprotocol.com"
                         className="hidden sm:block w-full cursor-pointer mt-4 py-1 rounded"
                         style={{
                             backgroundImage: `url(${SakeBanner})`,
@@ -650,12 +650,11 @@ export default function Swap() {
                                 style={{ lineHeight: 1.3, maxWidth: 250 }}
                             >
                                 <div className="font-semibold">
-                                    <Trans>Final Day of Auction</Trans>
+                                    <Trans> Swap Favourite Assets on Layer 2</Trans>
                                 </div>
                                 <div className="text-xs">
                                     <Trans>
-                                        Place your bid for the world’s first tokenized Sake now on MISO before they’re
-                                        gone
+                                        Join Slash Protocol Today
                                     </Trans>
                                 </div>
                             </div>
