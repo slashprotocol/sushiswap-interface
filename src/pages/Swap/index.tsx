@@ -638,13 +638,7 @@ export default function Swap() {
                             backgroundRepeat: 'no-repeat'
                         }}
                     >
-                        <div className="justify-between flex pl-5 pr-8 items-center gap-6">
-                            <div style={{ maxWidth: 134 }}>
-                                <img src={SakeLogo} style={{ maxWidth: '100%' }} />
-                            </div>
-                            <div style={{ maxWidth: 80 }}>
-                                <img src={SakeBottle} style={{ maxWidth: '100%' }} />
-                            </div>
+                        
                             <div
                                 className="text-black font-normal flex flex-col space-y-2"
                                 style={{ lineHeight: 1.3, maxWidth: 250 }}
