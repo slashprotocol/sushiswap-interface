@@ -306,10 +306,10 @@ export default function Swap() {
     return (
         <>
             <Helmet>
-                <title>{i18n._(t`Swap`)} | Sushi</title>
+                <title>{i18n._(t`Swap`)} | Slash</title>
                 <meta
                     name="description"
-                    content="Sushi allows for swapping of ERC20 compatible tokens across multiple networks"
+                    content="Slash allows for swapping of ERC20 compatible tokens across multiple networks"
                 />
             </Helmet>
             <TokenWarningModal
