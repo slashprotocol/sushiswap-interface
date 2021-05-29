@@ -46,7 +46,7 @@ function AppBar(): JSX.Element {
                             <div className="flex items-center justify-between h-16">
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
-                                        <img src={Logo} alt="Sushi" className="h-10 w-auto" />
+                                        <img src={Logo} alt="Slash" className="h-10 w-auto" />
                                     </div>
                                     <div className="hidden sm:block sm:ml-4">
                                         <div className="flex space-x-2">
