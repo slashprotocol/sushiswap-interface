@@ -641,7 +641,7 @@ export default function Swap() {
                                 <img src={MisoLogo} style={{ maxWidth: '100%' }} />
                             </div>
                         </div> */}
-                    </a>
+                
                 </Wrapper>
             </div>
             {!swapIsUnsupported ? (
