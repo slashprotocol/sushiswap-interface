@@ -628,30 +628,7 @@ export default function Swap() {
                     {/*        </DarkCard>*/}
                     {/*    </div>*/}
                     {/*)}*/}
-                    <a
-                        href="https://slashprotocol.com"
-                        className="hidden sm:block w-full cursor-pointer mt-4 py-1 rounded"
-                        style={{
-                            backgroundImage: `url(${SakeBanner})`,
-                            backgroundPosition: 'center',
-                            backgroundSize: 'cover',
-                            backgroundRepeat: 'no-repeat'
-                        }}
-                    >
-                        
-                            <div
-                                className="text-black font-normal flex flex-col space-y-2"
-                                style={{ lineHeight: 1.3, maxWidth: 250 }}
-                            >
-                                <div className="font-semibold">
-                                    <Trans> Swap Favourite Assets on Layer 2</Trans>
-                                </div>
-                                <div className="text-xs">
-                                    <Trans>
-                                        Join Slash Protocol Today
-                                    </Trans>
-                                </div>
-                            </div>
+              
                        
                         {/* <div className="justify-between flex pl-5 pr-8 items-center gap-6">
                             <span className="text-high-emphesis font-normal" style={{ lineHeight: 1.3, maxWidth: 250 }}>
