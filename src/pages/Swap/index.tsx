@@ -652,7 +652,7 @@ export default function Swap() {
                                     </Trans>
                                 </div>
                             </div>
-                        </div>
+                       
                         {/* <div className="justify-between flex pl-5 pr-8 items-center gap-6">
                             <span className="text-high-emphesis font-normal" style={{ lineHeight: 1.3, maxWidth: 250 }}>
                                 <Trans>
